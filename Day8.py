@@ -25,23 +25,33 @@ def get_zpath(start_node, turns, adj_list, end_rule):
         path.append(adj_list[path[-1]][turns[move_index]]) 
 
         move_index += 1 
+
         if move_index == len(turns): 
             move_index = 0 
 
-    return path 
+    return path
 
 def solve_p1(turns, adj): 
     return len(get_zpath("AAA", turns, adj, lambda n: n == "ZZZ"))-1
 
 def solve_p2(turns, adj): 
-    nodes = [] 
+    path_lens = [] 
 
     for node in adj.keys(): 
         if node[-1] == "A": 
-            nodes.append(node) 
-
             z_path = get_zpath(node, turns, adj, lambda n: n[-1] == "Z")
-            print(len(z_path))     
+
+            path_lens.append(len(z_path)-1) 
+
+    min_path = min(path_lens)-1
+    c_product = 1
+    print(path_lens) 
+    print(min_path) 
+    for p in path_lens: 
+        c_product *= (p - min_path) 
+
+    return min_path + sum(path_lens) 
+
 
 turns, adj = parse_input("./Input/Day8.txt") 
 # current answer : too low 
